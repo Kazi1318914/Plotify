@@ -258,6 +258,8 @@ class DensityPlot:
         fig = plt.figure(figsize=size)
         self.__plot()
         plt.savefig(file_name)
+        plt.close(fig)  # prevent figure to pop up in the notebook
+        plt.ion()  # turns the display of the plot back on
 
 
 class Violinplot:
@@ -379,4 +381,5 @@ class Violinplot:
         fig = plt.figure(figsize=size)
         self.__plot()
         plt.savefig(file_name)
-        
+        plt.close(fig)  # prevent figure to pop up in the notebook
+        plt.ion()  # turns the display of the plot back on
