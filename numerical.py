@@ -104,6 +104,8 @@ class Boxplot:
         fig = plt.figure(figsize=size)
         self.__plot()
         plt.savefig(file_name)
+        plt.close(fig)  # prevent figure to pop up in the notebook
+        plt.ion()  # turns the display of the plot back on
 
 
 class DensityPlot:
@@ -383,3 +385,4 @@ class Violinplot:
         plt.savefig(file_name)
         plt.close(fig)  # prevent figure to pop up in the notebook
         plt.ion()  # turns the display of the plot back on
+        
