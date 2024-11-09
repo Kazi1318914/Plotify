@@ -4,47 +4,65 @@ import os
 
 
 class Boxplot:
-    def __init__(self, df, x=None, y=None, hue=None, order=None, hue_order=None, 
-                 orient=None, color=None, palette=None, saturation=0.75, width=0.8, dodge=True, 
-                 fliersize=5, linewidth=None, whis=1.5, ax=None, title=None, **kwargs):
+    def __init__(
+        self,
+        df,
+        x=None,
+        y=None,
+        hue=None,
+        order=None,
+        hue_order=None,
+        orient=None,
+        color=None,
+        palette=None,
+        saturation=0.75,
+        width=0.8,
+        dodge=True,
+        fliersize=5,
+        linewidth=None,
+        whis=1.5,
+        ax=None,
+        title=None,
+        **kwargs
+    ):
         """
         This is used to create boxplot figures using seaborn.
 
         Parameters:
         -----------
-        df (pandas.DataFrame): 
+        df (pandas.DataFrame):
             The dataframe containing the data to plot.
-        x, y (str): 
+        x, y (str):
             The names of two columns in df. The box plots will be for the y column grouped by x column values.
-        hue (str, optional): 
+        hue (str, optional):
             Column name for grouping the data by color/hue.
-        order, hue_order (list, optional): 
+        order, hue_order (list, optional):
             Order to plot the categorical levels in.
-        orient (str, optional): 
+        orient (str, optional):
             Orientation of the plot. 'v' or 'h'.
-        color (str, optional): 
+        color (str, optional):
             Color for all of the elements.
-        palette (str, optional): 
+        palette (str, optional):
             Colors to use for the different levels of the hue variable.
-        saturation (float, optional): 
+        saturation (float, optional):
             Proportion of the original saturation to draw colors.
-        width (float, optional): 
-            Width of a full element when not using hue nesting, or width of all the elements for one 
+        width (float, optional):
+            Width of a full element when not using hue nesting, or width of all the elements for one
             level of the major grouping variable.
-        dodge (bool, optional): 
+        dodge (bool, optional):
             When hue nesting is used, whether elements should be shifted along the categorical axis.
-        fliersize (float, optional): 
+        fliersize (float, optional):
             Size of the markers used to indicate outlier observations.
-        linewidth (float, optional): 
+        linewidth (float, optional):
             Line width of the box outlines.
-        whis (float, optional): 
+        whis (float, optional):
             Proportion of the IQR past the low and high quartiles to extend the plot whiskers.
-        ax (matplotlib.axes, optional): 
+        ax (matplotlib.axes, optional):
             Pre-existing axes for the plot. Otherwise, a new one is created.
-        title (str, optional): 
+        title (str, optional):
             Title for the plot.
-        **kwargs: 
-            Additional keyword arguments are passed to the underlying seaborn boxplot function. 
+        **kwargs:
+            Additional keyword arguments are passed to the underlying seaborn boxplot function.
             Other keyword arguments are passed through to matplotlib.axes.Axes.boxplot().
 
         Return:
@@ -77,11 +95,25 @@ class Boxplot:
         This is a private method used to create the boxplot.
 
         """
-        sns.boxplot(x=self.__x, y=self.__y, hue=self.__hue, data=self.__df, order=self.__order, 
-                        hue_order=self.__hue_order, orient=self.__orient, color=self.__color, 
-                        palette=self.__palette, saturation=self.__saturation, width=self.__width, 
-                        dodge=self.__dodge, fliersize=self.__fliersize, linewidth=self.__linewidth, 
-                        whis=self.__whis, ax=self.__ax, **self.__kwargs)
+        sns.boxplot(
+            x=self.__x,
+            y=self.__y,
+            hue=self.__hue,
+            data=self.__df,
+            order=self.__order,
+            hue_order=self.__hue_order,
+            orient=self.__orient,
+            color=self.__color,
+            palette=self.__palette,
+            saturation=self.__saturation,
+            width=self.__width,
+            dodge=self.__dodge,
+            fliersize=self.__fliersize,
+            linewidth=self.__linewidth,
+            whis=self.__whis,
+            ax=self.__ax,
+            **self.__kwargs
+        )
 
         if self.__title:
             plt.title(self.__title)
@@ -100,7 +132,7 @@ class Boxplot:
             if not os.path.exists(folder):
                 os.makedirs(folder)
             file_name = os.path.join(folder, file_name)
-        
+
         fig = plt.figure(figsize=size)
         self.__plot()
         plt.savefig(file_name)
@@ -109,19 +141,44 @@ class Boxplot:
 
 
 class DensityPlot:
-    def __init__(self, df, x=None, y=None, hue=None, weights=None, palette=None, 
-                 hue_order=None, hue_norm=None, fill=False, color=None, 
-                 multiple='layer', common_norm=True, common_grid=False, 
-                 cumulative=False, bw_method='scott', bw_adjust=1, 
-                 warn_singular=True, log_scale=None, levels=10, 
-                 thresh=0.05, gridsize=200, cut=3, clip=None, 
-                 legend=True, cbar=False, cbar_ax=None, cbar_kws=None, 
-                 ax=None, title=None, **kwargs):
+    def __init__(
+        self,
+        df,
+        x=None,
+        y=None,
+        hue=None,
+        weights=None,
+        palette=None,
+        hue_order=None,
+        hue_norm=None,
+        fill=False,
+        color=None,
+        multiple="layer",
+        common_norm=True,
+        common_grid=False,
+        cumulative=False,
+        bw_method="scott",
+        bw_adjust=1,
+        warn_singular=True,
+        log_scale=None,
+        levels=10,
+        thresh=0.05,
+        gridsize=200,
+        cut=3,
+        clip=None,
+        legend=True,
+        cbar=False,
+        cbar_ax=None,
+        cbar_kws=None,
+        ax=None,
+        title=None,
+        **kwargs
+    ):
         """
         This is used to create densityPlot figures using seaborn.
 
         Parameters:
-        -----------   
+        -----------
         df : Pandas dataframe
             Data for the plot.
         x, y : str, optional
@@ -137,9 +194,9 @@ class DensityPlot:
         hue_norm : tuple or matplotlib.colors.Normalize, optional
             Either a pair of values that set the normalization range in data units or an object that will map from data units into a [0, 1] interval.
         fill : boolean, default=False
-            If True, fill the area under the KDE curve. 
+            If True, fill the area under the KDE curve.
         color : matplotlib color, optional
-            Color for all elements, or seed for a gradient palette.  
+            Color for all elements, or seed for a gradient palette.
         multiple : {“layer”, “stack”, “fill”}, optional
             Approach to resolving multiple elements when semantic mapping creates subsets.
         common_norm : boolean, default=True
@@ -178,17 +235,17 @@ class DensityPlot:
             Axes onto which the plot will be drawn.
         title : str, optional
             The title of the plot.
-        **kwargs: 
+        **kwargs:
             matplotlib.axes.Axes.plot() (univariate, fill=False),
             matplotlib.axes.Axes.fill_between() (univariate, fill=True),
             matplotlib.axes.Axes.contour() (bivariate, fill=False),
             matplotlib.axes.contourf() (bivariate, fill=True).
-            
+
         Return:
         -------
         None
         """
-        
+
         self.__df = df
         self.__x = x
         self.__y = y
@@ -227,21 +284,41 @@ class DensityPlot:
         This is a private method used to create the densityplot.
 
         """
-        sns.kdeplot(data=self.__df, x=self.__x, y=self.__y, hue=self.__hue, 
-                    weights=self.__weights, palette=self.__palette, hue_order=self.__hue_order, 
-                    hue_norm=self.__hue_norm, fill=self.__fill, color=self.__color, 
-                    multiple=self.__multiple, common_norm=self.__common_norm, 
-                    common_grid=self.__common_grid, cumulative=self.__cumulative, 
-                    bw_method=self.__bw_method, bw_adjust=self.__bw_adjust, 
-                    warn_singular=self.__warn_singular, log_scale=self.__log_scale, 
-                    levels=self.__levels, thresh=self.__thresh, gridsize=self.__gridsize, 
-                    cut=self.__cut, clip=self.__clip, legend=self.__legend, 
-                    cbar=self.__cbar, cbar_ax=self.__cbar_ax, cbar_kws=self.__cbar_kws, 
-                    ax=self.__ax, **self.__kwargs)
+        sns.kdeplot(
+            data=self.__df,
+            x=self.__x,
+            y=self.__y,
+            hue=self.__hue,
+            weights=self.__weights,
+            palette=self.__palette,
+            hue_order=self.__hue_order,
+            hue_norm=self.__hue_norm,
+            fill=self.__fill,
+            color=self.__color,
+            multiple=self.__multiple,
+            common_norm=self.__common_norm,
+            common_grid=self.__common_grid,
+            cumulative=self.__cumulative,
+            bw_method=self.__bw_method,
+            bw_adjust=self.__bw_adjust,
+            warn_singular=self.__warn_singular,
+            log_scale=self.__log_scale,
+            levels=self.__levels,
+            thresh=self.__thresh,
+            gridsize=self.__gridsize,
+            cut=self.__cut,
+            clip=self.__clip,
+            legend=self.__legend,
+            cbar=self.__cbar,
+            cbar_ax=self.__cbar_ax,
+            cbar_kws=self.__cbar_kws,
+            ax=self.__ax,
+            **self.__kwargs
+        )
 
         if self.__title:
             plt.title(self.__title)
-            
+
     def save_plot(self, file_name, folder=None, size=(10, 6)):
         """
         This method saves the created plot in the specified directory.
@@ -256,7 +333,7 @@ class DensityPlot:
             if not os.path.exists(folder):
                 os.makedirs(folder)
             file_name = os.path.join(folder, file_name)
-        
+
         fig = plt.figure(figsize=size)
         self.__plot()
         plt.savefig(file_name)
@@ -265,58 +342,80 @@ class DensityPlot:
 
 
 class Violinplot:
-    def __init__(self, df, x=None, y=None, hue=None, order=None, hue_order=None, bw='scott', cut=2, 
-                 scale='area', scale_hue=True, gridsize=100, width=0.8, inner='box', split=False, 
-                 dodge=True, orient=None, linewidth=None, color=None, palette=None, saturation=0.75, ax=None,
-                 title=None, **kwargs):
+    def __init__(
+        self,
+        df,
+        x=None,
+        y=None,
+        hue=None,
+        order=None,
+        hue_order=None,
+        bw="scott",
+        cut=2,
+        scale="area",
+        scale_hue=True,
+        gridsize=100,
+        width=0.8,
+        inner="box",
+        split=False,
+        dodge=True,
+        orient=None,
+        linewidth=None,
+        color=None,
+        palette=None,
+        saturation=0.75,
+        ax=None,
+        title=None,
+        **kwargs
+    ):
         """
         This is used to create violinplot figures using seaborn.
 
         Parameters:
         -----------
-        df (pandas.DataFrame or array-like): 
+        df (pandas.DataFrame or array-like):
             The data to plot. DataFrame preferred.
-        x, y (str, array-like, optional): 
+        x, y (str, array-like, optional):
             Variables to use for plotting. Should be in `data` if it is a DataFrame.
-        hue (str or array-like, optional): 
+        hue (str or array-like, optional):
             Grouping variable that will produce different violins with different colors.
-        order, hue_order (list of strings, optional): 
-            Order to plot the categorical levels in. 
-        bw ({‘scott’, ‘silverman’, float}, optional): 
+        order, hue_order (list of strings, optional):
+            Order to plot the categorical levels in.
+        bw ({‘scott’, ‘silverman’, float}, optional):
             Method to use for calculating bandwidth.
-        cut (float, optional): 
+        cut (float, optional):
             Distance in units of bandwidth size to extend the density past the extreme datapoints.
-        scale ({“area”, “count”, “width”}, optional): 
+        scale ({“area”, “count”, “width”}, optional):
             The method used to scale the width of each violin.
-        scale_hue (bool, optional): 
+        scale_hue (bool, optional):
             When using hue nesting, the coloring of the violins are scaled.
-        gridsize (int, optional): 
+        gridsize (int, optional):
             Number of points in the discrete grid for the KDE computation.
-        width (float, optional): 
-            Width of a full element when not using hue nesting, or width of all the elements for one 
+        width (float, optional):
+            Width of a full element when not using hue nesting, or width of all the elements for one
             level of the major grouping variable.
-        inner ({“box”, “quartile”, “point”, “stick”, None}, optional): 
+        inner ({“box”, “quartile”, “point”, “stick”, None}, optional):
             The representation of the datapoints in the violin.
-        split (bool, optional): 
+        split (bool, optional):
             When using hue nesting with a binary variable split violins.
-        dodge (bool, optional): 
+        dodge (bool, optional):
             When hue nesting is used, whether elements should be shifted along the categorical axis.
-        orient (str, optional): 
+        orient (str, optional):
             Orientation of the plot. 'v' or 'h'.
-        linewidth (float, optional): 
+        linewidth (float, optional):
             Line width of the violin outlines.
-        color (Matplotlib color, optional): 
+        color (Matplotlib color, optional):
             Color for all of the elements.
-        palette (seaborn color palatte or dict, optional): 
-            Colors to use for the different levels of the hue variable. 
-        saturation (float, optional): 
+        palette (seaborn color palatte or dict, optional):
+            Colors to use for the different levels of the hue variable.
+        saturation (float, optional):
             Proportion of the original saturation to draw colors.
-        ax (matplotlib.axes, optional): 
+        ax (matplotlib.axes, optional):
             Pre-existing axes for the plot. Otherwise, a new one is created.
-        title (str, optional): 
+        title (str, optional):
             Title for the plot.
-        **kwargs: 
-            Additional keyword arguments are passed to the underlying seaborn boxplot function. 
+        **kwargs:
+            Additional keyword arguments are passed to the underlying seaborn boxplot function.
             Other keyword arguments are passed through to matplotlib.axes.Axes.boxplot().
 
         Return:
@@ -354,13 +453,30 @@ class Violinplot:
         This is a private method used to create the violinplot.
 
         """
-        plots = sns.violinplot(x=self.__x, y=self.__y, hue=self.__hue, data=self.__df, 
-                        order=self.__order, hue_order=self.__hue_order, bw=self.__bw, 
-                        cut=self.__cut, scale=self.__scale, scale_hue=self.__scale_hue, 
-                        gridsize=self.__gridsize, width=self.__width, inner=self.__inner, 
-                        split=self.__split, dodge=self.__dodge, orient=self.__orient, 
-                        linewidth=self.__linewidth, color=self.__color, palette=self.__palette, 
-                        saturation=self.__saturation, ax=self.__ax, **self.__kwargs)
+        plots = sns.violinplot(
+            x=self.__x,
+            y=self.__y,
+            hue=self.__hue,
+            data=self.__df,
+            order=self.__order,
+            hue_order=self.__hue_order,
+            bw=self.__bw,
+            cut=self.__cut,
+            scale=self.__scale,
+            scale_hue=self.__scale_hue,
+            gridsize=self.__gridsize,
+            width=self.__width,
+            inner=self.__inner,
+            split=self.__split,
+            dodge=self.__dodge,
+            orient=self.__orient,
+            linewidth=self.__linewidth,
+            color=self.__color,
+            palette=self.__palette,
+            saturation=self.__saturation,
+            ax=self.__ax,
+            **self.__kwargs
+        )
 
         if self.__title:
             plt.title(self.__title)
@@ -379,10 +495,216 @@ class Violinplot:
             if not os.path.exists(folder):
                 os.makedirs(folder)
             file_name = os.path.join(folder, file_name)
-        
+
         fig = plt.figure(figsize=size)
         self.__plot()
         plt.savefig(file_name)
         plt.close(fig)  # prevent figure to pop up in the notebook
         plt.ion()  # turns the display of the plot back on
-        
+
+
+class ConnectedScatterPlot:
+    def __init__(
+        self,
+        df,
+        x=None,
+        y=None,
+        plots=None,
+        ax=None,
+        title=None,
+        default_style=None,
+        **kwargs
+    ):
+        """
+        This is used to create one or more connected scatter plots using matplotlib.
+
+        Parameters:
+        -----------
+        df (pandas.DataFrame):
+            The data to plot. DataFrame preferred.
+        x, y (str or array-like, optional):
+            Variables to use for a basic single plot.
+        plots (list of dict, optional):
+            List of dictionaries where each dictionary contains parameters for individual plots.
+        ax (matplotlib.axes.Axes, optional):
+            Pre-existing axes for the plot. Otherwise, a new one is created.
+        title (str, optional):
+            Title for the plot.
+        default_style (dict, optional):
+            Default styling options for the plots like 'linestyle', 'marker', 'color', etc.
+        **kwargs:
+            Additional keyword arguments passed to the underlying `plot` function for default style.
+
+        Each dictionary in `plots` should contain:
+            - 'x': Column name or array-like for x-axis data.
+            - 'y': Column name or array-like for y-axis data.
+            - 'linestyle': Style of the line connecting data points.
+            - 'marker': Style of the markers on data points.
+            - 'color': Color for the line and markers.
+            - 'linewidth': Width of the lines connecting points.
+            - 'label': Label for the plot (optional for legend).
+
+        Return:
+        -------
+        None
+        """
+        self.__df = df
+        self.__plots = plots or []
+        self.__ax = ax
+        self.__title = title
+        self.__default_style = default_style or {}
+
+        if x and y:
+            # If x and y are provided for a basic single plot
+            self.__plots = [{"x": x, "y": y, **self.__default_style, **kwargs}]
+
+        self.__plot()
+
+    def __plot(self):
+        """
+        This is a private method used to create the connected scatter plots.
+        """
+        if self.__ax is None:
+            self.__ax = plt.gca()
+
+        for plot in self.__plots:
+            # Extract x and y to use as positional arguments
+            x = plot.pop("x")
+            y = plot.pop("y")
+
+            # Pass the rest of the dictionary as keyword arguments
+            self.__ax.plot(self.__df[x], self.__df[y], **plot)
+
+        if self.__title:
+            self.__ax.set_title(self.__title)
+
+        self.__ax.legend()
+
+    def save_plot(self, file_name, folder=None, size=(10, 6)):
+        """
+        This method saves the created plot in the specified directory.
+
+        Args:
+            file_name (str): Name of the file
+            folder (str, optional): Name of the directory. If not available, it creates one.
+            size (tuple, optional): Size of the figure in inches (width, height). Default is (10, 6).
+
+        """
+        if folder:
+            if not os.path.exists(folder):
+                os.makedirs(folder)
+            file_name = os.path.join(folder, file_name)
+
+        fig, ax = plt.subplots(figsize=size)
+        self.__ax = ax  # Use the new axis for plotting
+        self.__plot()
+        plt.savefig(file_name)
+        plt.close(fig)  # prevent figure from popping up in the notebook
+        plt.ion()  # turns the display of the plot back on
+
+
+class ScatterPlot:
+    def __init__(
+        self,
+        df,
+        x=None,
+        y=None,
+        plots=None,
+        style="scatter",
+        ax=None,
+        title=None,
+        default_style=None,
+        **kwargs
+    ):
+        """
+        This is used to create one or more scatter plots, optionally with regression lines, using Seaborn.
+
+        Parameters:
+        -----------
+        df (pandas.DataFrame):
+            The data to plot. DataFrame preferred.
+        x (str, optional):
+            Column name for x-axis data.
+        y (str, optional):
+            Column name for y-axis data.
+        plots (list of dict, optional):
+            List of dictionaries where each dictionary contains parameters for individual plots.
+        style (str, optional):
+            Determines the type of plot: 'scatter', 'lm', or 'reg'.
+        ax (matplotlib.axes.Axes, optional):
+            Pre-existing axes for the plot. Otherwise, a new one is created.
+        title (str, optional):
+            Title for the plot.
+        default_style (dict, optional):
+            Default styling options for the plots, applicable unless overridden in `plot` config.
+        **kwargs:
+            Additional keyword arguments passed to the underlying plotting functions.
+
+        Each dictionary in `plots` should contain:
+            - 'x': Column name for x-axis data.
+            - 'y': Column name for y-axis data.
+            - 'hue': Variable in `df` for color encoding.
+            - Additional Seaborn plot-specific keys like 'col', 'row', 'palette', etc.
+
+        Return:
+        -------
+        None
+        """
+        self.__df = df
+        self.__plots = plots or []
+        self.__style = style
+        self.__ax = ax
+        self.__title = title
+        self.__default_style = default_style or {}
+
+        if x and y:
+            # If x and y are provided for a basic single plot
+            self.__plots = [{"x": x, "y": y, **self.__default_style, **kwargs}]
+
+        self.__plot()
+
+    def __plot(self):
+        """
+        This is a private method used to create the scatter plots.
+        """
+        sns.set_style("darkgrid")
+
+        for plot in self.__plots:
+            # Extract the necessary plot configuration
+            x = plot.pop("x")
+            y = plot.pop("y")
+
+            if self.__style == "lm":
+                sns.lmplot(x=x, y=y, data=self.__df, **plot)
+            else:
+                # Use plt.subplots for regplot and scatterplot to handle ax if provided
+                if self.__style == "reg":
+                    sns.regplot(x=self.__df[x], y=self.__df[y], ax=self.__ax, **plot)
+                else:
+                    sns.scatterplot(
+                        x=self.__df[x], y=self.__df[y], ax=self.__ax, **plot
+                    )
+
+        if self.__title:
+            if self.__style in ["scatter", "reg"] and self.__ax:
+                self.__ax.set_title(self.__title)
+
+    def save_plot(self, file_name, folder=None, size=(10, 6)):
+        """
+        This method saves the created plot in the specified directory.
+
+        Args:
+            file_name (str): Name of the file
+            folder (str, optional): Name of the directory. If not available, it creates one.
+            size (tuple, optional): Size of the figure in inches (width, height). Default is (10, 6).
+        """
+        if folder:
+            if not os.path.exists(folder):
+                os.makedirs(folder)
+            file_name = os.path.join(folder, file_name)
+
+        # Set the figure size and save the plot
+        plt.gcf().set_size_inches(size)
+        plt.savefig(file_name)
+        plt.close()  # Prevent the figure from popping up
+        plt.ion()  # Turn the interactive mode back on
