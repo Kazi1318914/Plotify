@@ -90,6 +90,14 @@ class BasePlot:
         Subclasses should call this at the end of their ``__init__`` after
         all plot-specific attributes have been stored.
         """
+        # Apply the active Plotify theme to the chosen backend's global
+        # state before rendering. Imported lazily to avoid the import cycle
+        # between base.py and the concrete plot modules that theme.py
+        # touches when ``apply_smart_ticks_to_current_axes`` runs.
+        from plotify import theme as _theme
+
+        _theme.apply_current(self._backend)
+
         # Single place that routes to one of the two private render methods.
         # Each subclass implements them; if a backend is unsupported it can
         # either raise NotImplementedError inside that method or narrow
@@ -100,6 +108,10 @@ class BasePlot:
             # from whatever was last drawn onto pyplot's global state.
             plt.figure()
             self._plot_seaborn()
+            # Apply tick formatters that rcParams cannot express directly
+            # (1.2K / 3.4M / etc.). Safe on date / category axes — the
+            # helper skips formatters that aren't ScalarFormatter.
+            _theme.apply_smart_ticks_to_current_axes()
         else:
             self._plot_plotly()
 

@@ -1,11 +1,69 @@
 # Plotify
 
-Plotify is a Python plotting package with a **dual backend**: every plot
-renders on either Seaborn/Matplotlib (static images) or Plotly (interactive).
+Plotify is a Python plotting package built around two ideas:
+
+1. **Auto-pick** — given a dataframe and column names, Plotify infers the
+   right chart from the data shape and types. No need to remember which
+   function to call.
+2. **Publication-ready by default** — every chart ships with a
+   colourblind-safe palette, smart tick formatting (1.2K, 3.4M),
+   minimalist spines, and consistent typography on both backends.
+
+Every plot can render on either Seaborn/Matplotlib (static images) or
+Plotly (interactive HTML).
 
 The chart catalogue and category split (Numerical, Categoric, Num & Cat,
 Time series, Network, Maps) are inspired by
 [data-to-viz.com](https://www.data-to-viz.com/).
+
+## Two-line example
+
+```python
+import pandas as pd, plotify
+
+df = pd.DataFrame({
+    "date": pd.date_range("2024-01-01", periods=12, freq="MS"),
+    "sales": [120, 140, 90, 200, 220, 260, 240, 310, 280, 330, 360, 410],
+    "region": ["North"] * 6 + ["South"] * 6,
+})
+
+plotify.auto(df, x="date", y="sales", color="region", backend="plotly")\
+       .save_plot("sales.html")
+```
+
+`plotify.auto` looks at the dtypes (datetime, numeric, low-cardinality
+group), picks `LineChart`, and returns a beautifully themed figure.
+
+## What `auto` actually picks
+
+```python
+plotify.suggest(df, x="date", y="sales", color="region")
+# → [Suggestion(LineChart,        score=0.96, reason="datetime x + numeric y + low-cardinality group → multi-series line chart"),
+#    Suggestion(StackedAreaChart, score=0.72, reason="stacked area variant for compositional time series")]
+```
+
+Suggestions come ranked, each with a one-line reason — useful for
+debugging or for showing the user *why* a chart was picked.
+
+You can also pass an `intent` to override the rules:
+
+```python
+plotify.auto(df, x="region", y="sales", intent="distribution")
+# → Violinplot
+```
+
+## Themes
+
+`plotify.theme` controls the look of every chart on both backends.
+
+```python
+import plotify
+
+plotify.theme.get_current().name      # "publication" — applied automatically
+plotify.theme.set("none")             # opt out, use library defaults
+plotify.theme.register(plotify.theme.Theme(name="brand", palette=("#FF1493", "#00CED1")))
+plotify.theme.set("brand")
+```
 
 ## Package structure
 

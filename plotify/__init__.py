@@ -11,6 +11,10 @@ subpackage directly (e.g. ``from plotify.network import SankeyDiagram``).
 
 __version__ = "0.1.0"
 
+# Smart picker + theme layer — the headline features.
+from plotify import theme
+from plotify.auto import Suggestion, auto, suggest
+
 from plotify.categorical import (
     BarPlot,
     CircularPacking,
@@ -62,6 +66,11 @@ from plotify.timeseries import (
 
 __all__ = [
     "__version__",
+    # smart picker + theme
+    "Suggestion",
+    "auto",
+    "suggest",
+    "theme",
     # numerical
     "Boxplot",
     "ConnectedScatterPlot",
