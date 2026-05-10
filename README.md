@@ -168,18 +168,3 @@ rendered outputs are embedded in the committed `.ipynb` files. The script
 sets `PYTHONPATH` to the repo root automatically, so it works without
 pip-installing the package.
 
-## Migration note
-
-The previous `numerical.py` at the repo root has been replaced by the
-`plotify.numerical` subpackage. Update imports:
-
-```python
-# Before
-from numerical import Boxplot
-
-# After
-from plotify.numerical import Boxplot
-```
-
-The existing `test.ipynb` at the repo root still references the old import
-and should be updated by hand if you continue to use it.

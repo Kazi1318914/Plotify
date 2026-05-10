@@ -2,13 +2,39 @@
 name = "plotify"
 version = "0.1.0"
 description = "A Python plotting package with a dual Seaborn/Matplotlib + Plotly backend."
-authors = ["Kazi1318914"]
+authors = ["Kazi1318914 <mahin.kkgb.km@gmail.com>"]
 readme = "README.md"
 license = "MIT"
 packages = [{ include = "plotify" }]
+homepage = "https://github.com/Kazi1318914/Plotify"
+repository = "https://github.com/Kazi1318914/Plotify"
+keywords = [
+    "plotting",
+    "visualization",
+    "dataviz",
+    "matplotlib",
+    "plotly",
+    "seaborn",
+    "charts",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.13"
+# Bumped to 3.10 because the package uses PEP 604 union syntax (``str | None``)
+# without ``from __future__ import annotations``.
+python = ">=3.10,<3.13"
 pandas = ">=2.0"
 numpy = ">=1.24"
 matplotlib = ">=3.7"
@@ -21,7 +47,15 @@ wordcloud = ">=1.9"
 matplotlib-venn = ">=0.11"
 circlify = ">=0.15"
 networkx = ">=3.1"
-geopandas = ">=0.14"
+# Optional — only used by ChoroplethMap's seaborn path when the user passes a
+# real GeoDataFrame. Skipping it shrinks the install footprint by ~200MB.
+geopandas = { version = ">=0.14", optional = true }
+
+[tool.poetry.extras]
+# `pip install plotify[maps]` pulls in geopandas for ChoroplethMap.
+maps = ["geopandas"]
+# `pip install plotify[full]` pulls in every optional dep.
+full = ["geopandas"]
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=8.0"

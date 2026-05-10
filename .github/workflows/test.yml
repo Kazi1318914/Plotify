@@ -1,0 +1,56 @@
+name: tests
+
+# Run on every push to the default branch and on every pull request. Both
+# triggers are needed because pull-request checks require a successful run
+# on the head sha, while push-to-main lets us cache wheels for subsequent
+# PRs.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: pytest (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      # Run the full matrix even if one Python version fails — easier to see
+      # which versions broke when a release is being prepared.
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Poetry
+        # The official installer is small and self-contained — quicker than
+        # ``pip install poetry`` and avoids polluting the global site-packages.
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Cache Poetry virtualenv
+        # Cache the resolved virtualenv keyed on the lockfile + Python
+        # version. A cache hit drops install time from ~90s to ~5s.
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-py${{ matrix.python-version }}-${{ hashFiles('poetry.lock', 'pyproject.toml') }}
+
+      - name: Install dependencies
+        # Include the dev group (pytest) and the ``maps`` extra so the
+        # ChoroplethMap path that needs geopandas is exercised.
+        run: poetry install --no-interaction --with dev --extras maps
+
+      - name: Run pytest
+        run: poetry run pytest --tb=short -p no:warnings
