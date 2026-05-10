@@ -90,19 +90,32 @@ class Treemap(BasePlot):
             plt.title(self._title)
 
     def _plot_plotly(self):
-        """Render using :func:`plotly.express.treemap`."""
-        # px.treemap requires explicit parent column for hierarchy; if the
-        # caller did not provide one, treat all labels as top-level.
-        parents_col = (
-            self.__df[self.__parents].tolist()
-            if self.__parents
-            else [""] * len(self.__df)
-        )
-        fig = px.treemap(
-            names=self.__df[self.__labels].tolist(),
-            parents=parents_col,
-            values=self.__df[self.__values].tolist(),
-            title=self._title,
-            **self.__kwargs,
-        )
+        """Render using :func:`plotly.express.treemap`.
+
+        When a ``parents`` column is supplied we use Plotly Express's
+        ``path=`` form, which builds the parent → leaf hierarchy
+        automatically and aggregates values. Without ``parents`` we fall
+        back to a flat treemap with every label as a top-level node.
+        """
+        if self.__parents:
+            # Hierarchical: let Plotly Express handle the parent chain.
+            # Passing path=[parent_col, leaf_col] aggregates values by
+            # parent automatically, which is what the user expects.
+            fig = px.treemap(
+                self.__df,
+                path=[self.__parents, self.__labels],
+                values=self.__values,
+                color=self.__color,
+                title=self._title,
+                **self.__kwargs,
+            )
+        else:
+            # Flat: every leaf shares the implicit empty-string root.
+            fig = px.treemap(
+                names=self.__df[self.__labels].tolist(),
+                parents=[""] * len(self.__df),
+                values=self.__df[self.__values].tolist(),
+                title=self._title,
+                **self.__kwargs,
+            )
         self._fig = fig

@@ -80,6 +80,18 @@ class BasePlot:
         self._title = title
         self._fig = None  # populated by _render() in the concrete subclass
 
+    @property
+    def fig(self):
+        """The underlying figure object.
+
+        Returns the active :class:`matplotlib.figure.Figure` (Seaborn
+        backend) or :class:`plotly.graph_objects.Figure` (Plotly backend).
+        Useful in notebooks: ``MyPlot(...).fig`` displays the plot inline,
+        and Plotly figures expose their full ``.show()`` / ``.update_*``
+        APIs.
+        """
+        return self._fig
+
     # ------------------------------------------------------------------ #
     # Render dispatch
     # ------------------------------------------------------------------ #
@@ -108,6 +120,10 @@ class BasePlot:
             # from whatever was last drawn onto pyplot's global state.
             plt.figure()
             self._plot_seaborn()
+            # Capture whichever figure ended up active. Seaborn helpers
+            # like ``lmplot`` / ``catplot`` create their own FacetGrid, so
+            # we cannot assume our ``plt.figure()`` above is what got drawn.
+            self._fig = plt.gcf()
             # Apply tick formatters that rcParams cannot express directly
             # (1.2K / 3.4M / etc.). Safe on date / category axes — the
             # helper skips formatters that aren't ScalarFormatter.

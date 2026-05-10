@@ -16,6 +16,22 @@ The chart catalogue and category split (Numerical, Categoric, Num & Cat,
 Time series, Network, Maps) are inspired by
 [data-to-viz.com](https://www.data-to-viz.com/).
 
+## Demo notebooks
+
+The fastest way to see what Plotify can do — runnable notebooks under
+[`notebooks/`](notebooks/) with every chart class rendered on both backends:
+
+- [`00_quickstart.ipynb`](notebooks/00_quickstart.ipynb) — `auto`, `suggest`, themes
+- [`01_numerical.ipynb`](notebooks/01_numerical.ipynb) — Boxplot, Density, Violin, Scatter, ConnectedScatter
+- [`02_categorical.ipynb`](notebooks/02_categorical.ipynb) — all 12 categoric charts
+- [`03_num_cat.ipynb`](notebooks/03_num_cat.ipynb) — GroupedBar, StackedBar, GroupedScatter, BoxPlotByGroup
+- [`04_timeseries.ipynb`](notebooks/04_timeseries.ipynb) — Line, Area, StackedArea, StreamGraph
+- [`05_network.ipynb`](notebooks/05_network.ipynb) — Network, Chord, Sankey, Arc, HierarchicalEdgeBundling
+- [`06_maps.ipynb`](notebooks/06_maps.ipynb) — Choropleth, Bubble, Hexbin, Cartogram, Connection
+
+Outputs are committed, so the notebooks render fully on GitHub without
+running them.
+
 ## Two-line example
 
 ```python
@@ -130,11 +146,27 @@ has no native equivalent. Requesting an unsupported backend raises a
 | Network | `NetworkDiagram`, `ChordDiagram`, `SankeyDiagram`, `ArcDiagram`, `HierarchicalEdgeBundling` |
 | Maps | `ChoroplethMap`, `BubbleMap`, `HexbinMap`, `Cartogram`, `ConnectionMap` |
 
-## Running tests
+## Development
+
+Run the test suite:
 
 ```bash
 poetry run pytest
 ```
+
+The notebooks under [`notebooks/`](notebooks/) are **generated** from
+[`scripts/build_notebooks.py`](scripts/build_notebooks.py) — please don't
+hand-edit them. After changing an API or a chart class, rebuild and
+re-execute in a single step:
+
+```bash
+python scripts/build_notebooks.py --execute
+```
+
+The `--execute` flag runs each notebook via `jupyter nbconvert` so the
+rendered outputs are embedded in the committed `.ipynb` files. The script
+sets `PYTHONPATH` to the repo root automatically, so it works without
+pip-installing the package.
 
 ## Migration note
 

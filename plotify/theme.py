@@ -194,7 +194,17 @@ def _apply_matplotlib(theme: Theme) -> None:
 
 
 def _apply_plotly(theme: Theme) -> None:
-    """Build a Plotly template that mirrors ``theme`` and make it the default."""
+    """Build a Plotly template that mirrors ``theme`` and make it the default.
+
+    Notes
+    -----
+    We deliberately do **not** set ``tickformat`` on the axes. Setting a
+    numeric format such as ``"~s"`` here would apply globally and break
+    date axes (they would render as ``"~s"`` literals). Plotly already
+    auto-detects axis types and formats accordingly; users who want SI
+    suffixes on a specific numeric axis can opt in per-plot via
+    ``fig.update_yaxes(tickformat="~s")``.
+    """
     template = go.layout.Template()
     template.layout = go.Layout(
         colorway=list(theme.palette),
@@ -209,14 +219,12 @@ def _apply_plotly(theme: Theme) -> None:
             zeroline=False,
             showline="bottom" in theme.spines,
             linecolor="#444444",
-            tickformat="~s" if theme.smart_ticks else None,
         ),
         yaxis=dict(
             gridcolor=theme.grid_color,
             zeroline=False,
             showline="left" in theme.spines,
             linecolor="#444444",
-            tickformat="~s" if theme.smart_ticks else None,
         ),
     )
     pio.templates["plotify"] = template

@@ -82,16 +82,31 @@ class Dendrogram(BasePlot):
         if self._title:
             plt.title(self._title)
 
+    # Plotly's ff.create_dendrogram inverts scipy's orientation convention:
+    # passing orientation="top" makes the tree hang downward with negative
+    # y values, the opposite of scipy. We swap orientations here so the
+    # ``orientation`` argument has the same meaning across both backends —
+    # i.e., the scipy convention (root at the named side, leaves opposite).
+    _PLOTLY_ORIENTATION_FLIP = {
+        "top": "bottom",
+        "bottom": "top",
+        "left": "right",
+        "right": "left",
+    }
+
     def _plot_plotly(self):
         """Render using :func:`plotly.figure_factory.create_dendrogram`."""
         data = np.asarray(self.__df)
+        plotly_orientation = self._PLOTLY_ORIENTATION_FLIP.get(
+            self.__orientation, self.__orientation
+        )
         fig = ff.create_dendrogram(
             data,
             labels=self.__labels,
             linkagefun=lambda x: hierarchy.linkage(
                 data, method=self.__method, metric=self.__metric
             ),
-            orientation=self.__orientation,
+            orientation=plotly_orientation,
         )
         if self._title:
             fig.update_layout(title=self._title)
