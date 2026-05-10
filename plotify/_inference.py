@@ -88,7 +88,12 @@ def infer_kind(series: pd.Series) -> ColKind:
     # Rough heuristic: if the average string length is high, treat as free
     # text rather than a categorical. Used so e.g. tweet bodies don't get
     # plotted as a 10k-bar chart.
-    if series.dtype == object:
+    #
+    # ``is_string_dtype`` (rather than ``series.dtype == object``) is needed
+    # because newer pandas versions store string-only columns under
+    # ``StringDtype`` instead of ``object`` by default — checking ``object``
+    # alone misses them.
+    if pd.api.types.is_string_dtype(series):
         try:
             avg_len = series.dropna().astype(str).str.len().mean()
             if avg_len and avg_len > 30:
