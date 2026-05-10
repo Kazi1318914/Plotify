@@ -1,5 +1,10 @@
 # Plotify
 
+[![PyPI version](https://img.shields.io/pypi/v/plotify-charts.svg)](https://pypi.org/project/plotify-charts/)
+[![Python versions](https://img.shields.io/pypi/pyversions/plotify-charts.svg)](https://pypi.org/project/plotify-charts/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests](https://github.com/Kazi1318914/Plotify/actions/workflows/test.yml/badge.svg)](https://github.com/Kazi1318914/Plotify/actions/workflows/test.yml)
+
 Plotify is a Python plotting package built around two ideas:
 
 1. **Auto-pick** — given a dataframe and column names, Plotify infers the
