@@ -1,5 +1,8 @@
 [tool.poetry]
-name = "plotify"
+# PyPI distribution name. The Python import name stays ``plotify`` (set by
+# the ``packages`` field below), so users do ``pip install plotify-charts``
+# but still write ``import plotify``.
+name = "plotify-charts"
 version = "0.1.0"
 description = "A Python plotting package with a dual Seaborn/Matplotlib + Plotly backend."
 authors = ["Kazi1318914 <mahin.kkgb.km@gmail.com>"]

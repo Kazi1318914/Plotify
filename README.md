@@ -97,7 +97,22 @@ plotify/
 ## Installation
 
 ```bash
-poetry install
+pip install plotify-charts          # PyPI distribution name
+pip install plotify-charts[maps]    # adds geopandas for ChoroplethMap's seaborn path
+pip install plotify-charts[full]    # all optional extras
+```
+
+The Python import name is `plotify` regardless of which install variant
+you pick:
+
+```python
+import plotify
+```
+
+If you've cloned the repo for development, install with Poetry instead:
+
+```bash
+poetry install --with dev --extras full
 ```
 
 ## Usage
